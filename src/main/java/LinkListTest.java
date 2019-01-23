@@ -288,16 +288,58 @@ public class LinkListTest {
 
     /**
      * 11 两个链表的第一个公共结点
+     * 两个链表肯定是Y型，获得两个链表的长度相差k，那么长链表先走K，之后两个链表一起走，第一个指向相同的节点即为第一个公共节点。
      *
      * @param pHead1
      * @param pHead2
      * @return
      */
-    public ListNode FindFirstCommonNode(ListNode pHead1, ListNode pHead2) {
+    public static ListNode FindFirstCommonNode(ListNode pHead1, ListNode pHead2) {
         if (null == pHead1 || null == pHead2) {
             return null;
         }
+        int l1 = getListNodeLength(pHead1);
+        int l2 = getListNodeLength(pHead2);
+        ListNode p1 = pHead1;
+        ListNode p2 = pHead2;
+        int len = l1 - l2 >= 0 ? l1 - l2 : l2 - l1;
+        if (l1 - l2 > 0) {
+            while (len > 0) {
+                p1 = p1.next;
+                len--;
+            }
+            while (p1 != p2 && p1 != null && p2 != null) {
+                p1 = p1.next;
+                p2 = p2.next;
+            }
+            return p1;
 
+        } else {
+            while (len > 0) {
+                p2 = p2.next;
+                len--;
+            }
+            while (p1 != p2 && p1 != null && p2 != null) {
+                p1 = p1.next;
+                p2 = p2.next;
+            }
+            return p1;
+        }
+    }
+
+    /**
+     * 12 获取链表的长度
+     *
+     * @param pHead
+     * @return
+     */
+    public static int getListNodeLength(ListNode pHead) {
+        int num = 0;
+        while (pHead != null) {
+            pHead = pHead.next;
+            num++;
+        }
+        return num;
     }
 
     /**
@@ -330,6 +372,7 @@ public class LinkListTest {
         ListNode tmp = EntryNodeOfLoop(h1);
         System.out.println(tmp.val);
         System.out.println("--链表去重---");
+        System.out.println("--getListNodeLength---" + getListNodeLength(head));
 //        while (tmp != null) {
 //            System.out.println(tmp.val);
 //            tmp = tmp.next;
